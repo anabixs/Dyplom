@@ -1,12 +1,32 @@
 import { Line } from "react-chartjs-2";
 import PropTypes from "prop-types";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const FinancialChart = ({ data }) => {
   const chartData = {
     labels: data.map((d) => d.date),
     datasets: [
       {
-        label: "Цена акции",
+        label: "Price",
         data: data.map((d) => d.price),
         fill: false,
         backgroundColor: "rgb(75, 192, 192)",
