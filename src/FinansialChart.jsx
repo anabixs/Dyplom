@@ -1,5 +1,7 @@
 import { Line } from "react-chartjs-2";
 import PropTypes from "prop-types";
+import zoomPlugin from "chartjs-plugin-zoom";
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -18,15 +20,16 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  zoomPlugin
 );
-
-const FinancialChart = ({ data }) => {
+const FinancialChart = ({ data, name }) => {
+  console.log(name);
   const chartData = {
     labels: data.map((d) => d.date),
     datasets: [
       {
-        label: "Price",
+        label: name,
         data: data.map((d) => d.price),
         fill: false,
         backgroundColor: "rgb(75, 192, 192)",
@@ -36,13 +39,23 @@ const FinancialChart = ({ data }) => {
   };
 
   const options = {
+    aspectRatio: 1, // Установите нужное соотношение сторон, если необходимо
     scales: {
-      y: {
-        beginAtZero: true,
-      },
+      y: {},
       x: {
-        // Используйте 'x' вместо 'xAxes' если нужно настроить ось X
-        // Конфигурация для оси X, если необходимо
+        ticks: {
+          maxRotation: 90,
+          minRotation: 30,
+        },
+      },
+    },
+    plugins: {
+      zoom: {
+        zoom: {
+          wheel: { enabled: true },
+          pinch: { enabled: true },
+          mode: "x",
+        },
       },
     },
   };
@@ -56,6 +69,7 @@ FinancialChart.propTypes = {
       price: PropTypes.number.isRequired,
     })
   ).isRequired,
+  name: PropTypes.string.isRequired,
 };
 
 export default FinancialChart;
